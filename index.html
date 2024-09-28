@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Audio Player with Auto Play</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    .audio-player {
+      display: inline-block;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      width: 400px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      text-align: center;
+      font-size: 12px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    audio {
+      display: none;
+    }
+
+    #track-name {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #progress-bar {
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .track-list {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .track-list ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    .track-list li {
+      margin: 10px 0;
+      cursor: pointer;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .track-list li:hover {
+      background-color: #f4f4f4;
+    }
+	
+	@media (max-width: 600px) {
+		body {
+		font-family: Arial, sans-serif;
+		text-align: center;
+		margin: 40px;
+		}
+		
+		.audio-player {
+		width: 100%;               /* Full width */
+		padding: 10px;             /* Padding adjustments */
+		margin: 0 auto;            /* Center horizontally */
+		box-sizing: border-box;     /* Ensure padding doesn't exceed width */
+		}
+	}
+
+  </style>
+</head>
+<body>
+
+  <div class="audio-player">
+    <h2>Simple Audio Player</h2>
+    <div>
+      <button onclick="prevAudio()">◄</button>
+      <button onclick="playPauseAudio()">Play/Pause</button>
+      <button onclick="nextAudio()">►</button>
+	  <button onclick="replayAudio()">Restart</button>
+	  <button onclick="shuffleAudio()">Shuffle</button>
+	  <button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
+    </div>
+
+    <p id="track-name">No track is being played</p>
+    
+    <!-- Progress bar and time -->
+    <input type="range" id="progress-bar" value="0" max="100" step="1" oninput="seekAudio()">
+    <div class="time-display">
+      <span id="current-time">0:00</span>
+      <span id="duration-time">0:00</span>
+    </div>
+
+    <!-- Auto Play Button -->
+    <button id="autoplay-btn" onclick="toggleAutoPlay()">Enable Auto Play Next</button>
+  </div>
+
+  <!-- Track List -->
+  <div class="track-list">
+    <h3>Tracks</h3>
+    <ul id="track-list">
+      <!-- Tracks will be dynamically inserted here -->
+    </ul>
+  </div>
+
+  <audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
+  <audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
+  <audio id="audio3" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sunnah%20Berjuang.MP3"></audio>
+
+  <script>
+    const audioTracks = [
+      document.getElementById('audio1'),
+      document.getElementById('audio2'),
+      document.getElementById('audio3')
+    ];
+
+    const trackNames = [
+      "Sifat 20",
+      "Rahsia Bahagia",
+      "Sunnah Berjuang"
+    ];
+
+    let currentTrack = 0;
+    let isPlaying = false;
+    let isAutoPlayNext = false; // To track Auto Play Next mode
+
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeDisplay = document.getElementById('current-time');
+    const durationTimeDisplay = document.getElementById('duration-time');
+    const trackList = document.getElementById('track-list');
+    const autoPlayButton = document.getElementById('autoplay-btn');
+
+    // Generate track list dynamically from trackNames array
+    function createTrackList() {
+      trackNames.forEach((trackName, index) => {
+        const trackItem = document.createElement('li');
+        trackItem.textContent = trackName;
+        trackItem.onclick = () => playTrack(index);  // Play track when clicked
+        trackList.appendChild(trackItem);
+      });
+    }
+
+    // Toggle Auto Play Next mode
+    function toggleAutoPlay() {
+      isAutoPlayNext = !isAutoPlayNext;
+      autoPlayButton.textContent = isAutoPlayNext ? "Auto Play Next Enabled" : "Auto Play Next Disabled";
+    }
+
+    // Play or pause audio
+    function playPauseAudio() {
+      const currentAudio = audioTracks[currentTrack];
+
+      if (isPlaying) {
+        currentAudio.pause();
+        isPlaying = false;
+      } else {
+        currentAudio.play();
+        isPlaying = true;
+      }
+
+      updateTrackName();
+      updateProgress();
+      checkAutoPlay(); // Check if Auto Play Next is enabled
+    }
+
+    // Go to next audio
+    function nextAudio() {
+	audioTracks[currentTrack].pause();
+	audioTracks[currentTrack].currentTime = 0; // Reset the current track to the start
+	currentTrack = (currentTrack + 1) % audioTracks.length;
+	audioTracks[currentTrack].play();
+	updateTrackName();
+	resetProgress();
+	isPlaying = true;
+	audioTracks[currentTrack].loop = isLooping;
+}
+
+
+    // Go to previous audio
+    function prevAudio() {
+	audioTracks[currentTrack].pause();
+	audioTracks[currentTrack].currentTime = 0; // Reset the current track to the start
+	currentTrack = (currentTrack - 1 + audioTracks.length) % audioTracks.length;
+	audioTracks[currentTrack].play();
+	updateTrackName();
+	resetProgress();
+	isPlaying = true;
+	audioTracks[currentTrack].loop = isLooping;
+	}
+
+
+    // Play selected track from list
+    function playTrack(trackIndex) {
+      audioTracks[currentTrack].pause(); // Pause current track
+      currentTrack = trackIndex; // Update current track
+      audioTracks[currentTrack].play(); // Play selected track
+      updateTrackName();
+      resetProgress();
+      isPlaying = true;
+      checkAutoPlay(); // Check if Auto Play Next is enabled
+    }
+
+    // Check if Auto Play Next is enabled, and set up the 'ended' event listener
+    function checkAutoPlay() {
+      const currentAudio = audioTracks[currentTrack];
+      currentAudio.onended = () => {
+        if (isAutoPlayNext) {
+          nextAudio();
+        }
+      };
+    }
+
+    // Update track name display
+    function updateTrackName() {
+      document.getElementById('track-name').textContent = trackNames[currentTrack];
+    }
+
+    // Update progress bar and time display
+    function updateProgress() {
+      const currentAudio = audioTracks[currentTrack];
+
+      currentAudio.addEventListener('timeupdate', () => {
+        const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+        progressBar.value = progress;
+
+        // Update current time and duration
+        currentTimeDisplay.textContent = formatTime(currentAudio.currentTime);
+        durationTimeDisplay.textContent = formatTime(currentAudio.duration);
+      });
+    }
+
+    // Seek audio position using progress bar
+    function seekAudio() {
+      const currentAudio = audioTracks[currentTrack];
+      const seekTime = (progressBar.value / 100) * currentAudio.duration;
+      currentAudio.currentTime = seekTime;
+    }
+
+    // Reset progress bar when track changes
+    function resetProgress() {
+      progressBar.value = 0;
+      currentTimeDisplay.textContent = "0:00";
+      durationTimeDisplay.textContent = "0:00";
+      updateProgress();
+    }
+
+    // Format time in minutes and seconds
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Create the track list on page load
+    createTrackList();
+	
+	function replayAudio() {
+	const currentAudio = audioTracks[currentTrack];
+	currentAudio.currentTime = 0;
+	currentAudio.play();
+	isPlaying = true;
+	}
+
+	// Function to shuffle and play a random track
+	function shuffleAudio() {
+	audioTracks[currentTrack].pause();  // Pause current track
+	audioTracks[currentTrack].currentTime = 0;  // Reset current track to start
+
+	// Generate a random track index that's not the current one
+	let randomTrack;
+	do {
+    randomTrack = Math.floor(Math.random() * audioTracks.length);
+	} while (randomTrack === currentTrack);
+
+	currentTrack = randomTrack;  // Update current track to the new random track
+	audioTracks[currentTrack].play();  // Play the new random track
+	updateTrackName();
+	resetProgress();
+	isPlaying = true;
+	}
+
+	let isLooping = false;  // Track loop status
+
+	function toggleLoop() {
+	const loopBtn = document.getElementById('loop-btn');
+	isLooping = !isLooping;
+
+	if (isLooping) {
+    loopBtn.style.backgroundColor = '#4CAF50';  // Active color like other buttons
+    audioTracks[currentTrack].loop = true;      // Enable loop
+	} else {
+    loopBtn.style.backgroundColor = 'grey';     // Inactive grey color
+    audioTracks[currentTrack].loop = false;     // Disable loop
+	}
+	}
+  </script>
+</body>
+</html>
