@@ -30,6 +30,7 @@
       margin: 5px;
       border-radius: 5px;
       cursor: pointer;
+	  height: 2rem;
     }
 
     button:hover {
@@ -57,8 +58,9 @@
     }
 
     .track-list {
-      text-align: left;
+	  text-align: left;
       margin-top: 20px;
+	  width: 400px;
     }
 
     .track-list ul {
@@ -118,16 +120,18 @@
     </div>
 
     <!-- Auto Play Button -->
-    <button id="autoplay-btn" onclick="toggleAutoPlay()">Enable Auto Play Next</button>
+    <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Enable Auto Play Next</button>
   </div>
 
   <!-- Track List -->
+  <center>
   <div class="track-list">
     <h3>Tracks</h3>
     <ul id="track-list">
       <!-- Tracks will be dynamically inserted here -->
     </ul>
   </div>
+  </center>
 
   <audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
   <audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
@@ -168,9 +172,23 @@
 
     // Toggle Auto Play Next mode
     function toggleAutoPlay() {
-      isAutoPlayNext = !isAutoPlayNext;
-      autoPlayButton.textContent = isAutoPlayNext ? "Auto Play Next Enabled" : "Auto Play Next Disabled";
-    }
+	const autoPlayBtn = document.getElementById('autoplay-btn');
+	isAutoPlayNext = !isAutoPlayNext;
+
+	if (isAutoPlayNext) {
+    autoPlayBtn.style.backgroundColor = '#4CAF50';  // Active color like other buttons
+    autoPlayBtn.textContent = "Disable Auto Play Next";
+	} else {
+    autoPlayBtn.style.backgroundColor = 'grey';     // Inactive grey color
+    autoPlayBtn.textContent = "Enable Auto Play Next";
+	}
+	
+	if (isAutoPlayNext) {
+	audioTracks[currentTrack].onended = nextAudio;
+	} else {
+	audioTracks[currentTrack].onended = null;
+	}
+	}
 
     // Play or pause audio
     function playPauseAudio() {
@@ -199,7 +217,13 @@
 	resetProgress();
 	isPlaying = true;
 	audioTracks[currentTrack].loop = isLooping;
-}
+	
+	if (isAutoPlayNext) {
+	audioTracks[currentTrack].onended = nextAudio;
+	} else {
+	audioTracks[currentTrack].onended = null;
+	}
+	}
 
 
     // Go to previous audio
@@ -212,6 +236,12 @@
 	resetProgress();
 	isPlaying = true;
 	audioTracks[currentTrack].loop = isLooping;
+	
+	if (isAutoPlayNext) {
+	audioTracks[currentTrack].onended = nextAudio;
+	} else {
+	audioTracks[currentTrack].onended = null;
+	}
 	}
 
 
