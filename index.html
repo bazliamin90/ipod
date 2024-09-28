@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Audio Player with Auto Play</title>
+  <title>Baz's Ipod</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -42,13 +42,18 @@
     }
 
     #track-name {
-      margin-top: 15px;
+      margin-top: 25px;
       font-weight: bold;
+	  background-color: white;
+	  width: 100%;
+	  padding: 5px;
+	  box-sizing: border-box;
+	  text-align: center;
     }
 
     #progress-bar {
       width: 100%;
-      margin: 20px 0;
+      margin: 10px 0;
     }
 
     .time-display {
@@ -93,6 +98,19 @@
 		margin: 0 auto;            /* Center horizontally */
 		box-sizing: border-box;     /* Ensure padding doesn't exceed width */
 		}
+		
+		#track-name {
+		font-size: 0.7rem;
+		}
+		
+		.time-display {
+		font-size: 0.7rem;
+		}
+		
+		.track-list {
+		width: 100%;
+		font-size: 0.7rem;
+		}
 	}
 
   </style>
@@ -100,11 +118,11 @@
 <body>
 
   <div class="audio-player">
-    <h2>Simple Audio Player</h2>
     <div>
       <button onclick="prevAudio()">◄</button>
       <button onclick="playPauseAudio()">Play/Pause</button>
       <button onclick="nextAudio()">►</button>
+	  <br>
 	  <button onclick="replayAudio()">Restart</button>
 	  <button onclick="shuffleAudio()">Shuffle</button>
 	  <button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
@@ -120,7 +138,7 @@
     </div>
 
     <!-- Auto Play Button -->
-    <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Enable Auto Play Next</button>
+    <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play</button>
   </div>
 
   <!-- Track List -->
@@ -177,10 +195,10 @@
 
 	if (isAutoPlayNext) {
     autoPlayBtn.style.backgroundColor = '#4CAF50';  // Active color like other buttons
-    autoPlayBtn.textContent = "Disable Auto Play Next";
+    autoPlayBtn.textContent = "Auto Play";
 	} else {
     autoPlayBtn.style.backgroundColor = 'grey';     // Inactive grey color
-    autoPlayBtn.textContent = "Enable Auto Play Next";
+    autoPlayBtn.textContent = "Auto Play";
 	}
 	
 	if (isAutoPlayNext) {
