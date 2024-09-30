@@ -112,6 +112,14 @@
 	padding: 5px;       /* Padding for a bit of space */
 	}
 
+	#timer-display{
+	color: white;
+	font-size: 12px;
+	}
+	
+	#search-bar{
+	border-radius: 5px;
+	}
 	
 	@media (max-width: 600px) {
 		body {
@@ -171,25 +179,34 @@
 
     <!-- Auto Play Button -->
     <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
-  </div>
+	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()" style="margin-top: 10px; width: 100%;">
+	</div>
 
-  <!-- Track List -->
-  <center>
-  <div class="track-list">
+	<!-- Track List -->
+	<center>
+	<div class="track-list">
     <h3>Tracks</h3>
-    <ul id="track-list">
+	
+	<center>
+	<input type="text" id="search-bar" placeholder="Search tracks..." oninput="filterTracks()">
+    </center>
+	
+	<ul id="track-list">
       <!-- Tracks will be dynamically inserted here -->
     </ul>
-  </div>
-  </center>
-
-  <div class="note">
-	Nostalgia Ipod dulu-dulu
-  </div>
+	</div>
+	</center>
+	
+	<div class="note">
+		Nostalgia Ipod dulu-dulu
+	</div>
   
-  <audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
-  <audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
-  <audio id="audio3" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sunnah%20Berjuang.MP3"></audio>
+	<audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
+	<audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
+	<audio id="audio3" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sunnah%20Berjuang.MP3"></audio>
+
+	<button onclick="setSleepTimer()">Sleep Timer</button>
+	<span id="timer-display"></span>
 
   <script>
     const audioTracks = [
@@ -411,6 +428,85 @@
     audioTracks[currentTrack].loop = false;     // Disable loop
 	}
 	}
+	
+	function adjustVolume() {
+  const currentAudio = audioTracks[currentTrack];
+  const volumeControl = document.getElementById('volume-control');
+  currentAudio.volume = volumeControl.value / 100;
+	}
+
+	let sleepEndTime; // To track when the timer will end
+let sleepTimerInterval; // To update the time left display
+
+function setSleepTimer() {
+  const time = prompt("Enter sleep time in minutes:");
+
+  if (time && !isNaN(time)) {
+    const duration = parseInt(time, 10) * 60 * 1000; // Convert minutes to milliseconds
+    sleepEndTime = Date.now() + duration; // Set the end time
+
+    // Clear any existing timer and time left display
+    clearTimeout(sleepTimerInterval);
+    clearInterval(sleepTimerInterval);
+    document.getElementById('timer-display').textContent = '';
+
+    // Set the timer to stop playback
+    setTimeout(() => {
+      audioTracks[currentTrack].pause();
+      alert("Sleep timer finished. Playback stopped.");
+      document.getElementById('timer-display').textContent = ''; // Clear display when timer ends
+    }, duration);
+
+    // Start the interval to update the time left every second
+    updateTimerDisplay();
+  }
+}
+
+	// Function to update the remaining time display every second
+	function updateTimerDisplay() {
+	const timerDisplay = document.getElementById('timer-display');
+
+	sleepTimerInterval = setInterval(() => {
+    const timeLeft = sleepEndTime - Date.now(); // Calculate time left
+
+    if (timeLeft > 0) {
+      const minutesLeft = Math.floor(timeLeft / 60000);
+      const secondsLeft = Math.floor((timeLeft % 60000) / 1000);
+      timerDisplay.textContent = `Time left: ${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+    } else {
+      clearInterval(sleepTimerInterval); // Stop updating when the timer finishes
+      timerDisplay.textContent = ''; // Clear display when timer expires
+    }
+	}, 1000); // Update every second
+	}
+
+	document.addEventListener('keydown', (event) => {
+	if (event.code === 'Space') {
+		playPauseAudio();
+	} else if (event.code === 'ArrowRight') {
+		nextAudio();
+	} else if (event.code === 'ArrowLeft') {
+		prevAudio();
+	} else if (event.code === 'KeyS' && event.shiftKey) {
+		shuffleAudio();
+	} else if (event.code === 'KeyR' && event.shiftKey) {
+		replayAudio();
+	}
+	});
+	
+	function filterTracks() {
+  const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+  const trackItems = document.querySelectorAll('.track-list li');
+  trackItems.forEach((item, index) => {
+    if (trackNames[index].toLowerCase().includes(searchQuery)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+
   </script>
 </body>
 </html>
