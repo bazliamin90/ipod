@@ -14,6 +14,7 @@
 	
 	h3{
 	  color: white;
+	  text-align: center;
 	}
 
     .audio-player {
@@ -119,6 +120,10 @@
 	
 	#search-bar{
 	border-radius: 5px;
+	outline: none;
+	padding: 3px;
+	color: red;
+	font-size: 12px;
 	}
 	
 	@media (max-width: 600px) {
@@ -135,7 +140,7 @@
 		box-sizing: border-box;     /* Ensure padding doesn't exceed width */
 		}
 		
-		#track-name {
+		#track-name,#search-bar{
 		font-size: 0.7rem;
 		}
 		
@@ -163,9 +168,9 @@
       <button onclick="playPauseAudio()">Play/Pause</button>
       <button onclick="nextAudio()">▷</button>
 	  <br>
-	  <button onclick="replayAudio()">Restart</button>
+	  <button onclick="replayAudio()">↻</button>
 	  <button onclick="shuffleAudio()">Shuffle</button>
-	  <button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
+	  <button onclick="stopAudio()">◼</button>
     </div>
 
     <p id="track-name">No track is being played</p>
@@ -179,6 +184,7 @@
 
     <!-- Auto Play Button -->
     <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
+	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
 	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()" style="margin-top: 10px; width: 100%;">
 	</div>
 
@@ -188,7 +194,7 @@
     <h3>Tracks</h3>
 	
 	<center>
-	<input type="text" id="search-bar" placeholder="Search tracks..." oninput="filterTracks()">
+	<input type="text" id="search-bar" placeholder="Search..." oninput="filterTracks()">
     </center>
 	
 	<ul id="track-list">
@@ -495,17 +501,36 @@ function setSleepTimer() {
 	});
 	
 	function filterTracks() {
-  const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-  const trackItems = document.querySelectorAll('.track-list li');
-  trackItems.forEach((item, index) => {
+	const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+	const trackItems = document.querySelectorAll('.track-list li');
+	trackItems.forEach((item, index) => {
     if (trackNames[index].toLowerCase().includes(searchQuery)) {
       item.style.display = 'block';
     } else {
       item.style.display = 'none';
     }
-  });
-}
+	});
+	}
 
+	function stopAudio() {
+  const currentAudio = audioTracks[currentTrack];
+  
+  // Pause the audio
+  currentAudio.pause();
+  
+  // Reset the audio to the beginning
+  currentAudio.currentTime = 0;
+  
+  // Set the playing state to false
+  isPlaying = false;
+  
+  // Reset the progress bar and time display
+  progressBar.value = 0;
+  currentTimeDisplay.textContent = "0:00";
+  
+  // Update track name display if necessary
+  updateTrackName();
+}
 
   </script>
 </body>
