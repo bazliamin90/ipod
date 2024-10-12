@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baz's Ipod</title>
   <style>
+	@font-face { font-family: opendyslexic-bold; src: url('font/OpenDyslexic-Bold.otf'); }
+	@font-face { font-family: opendyslexic-reg; src: url('font/OpenDyslexic-Regular.otf'); }
+	@font-face { font-family: opendyslexic-ita; src: url('font/OpenDyslexic-Italic.otf'); }
+	@font-face { font-family: opendyslexic-boldita; src: url('font/OpenDyslexic-BoldItalic.otf'); }
+  
     body {
-      font-family: Arial, sans-serif;
+	  font-family: opendyslexic-reg;
       text-align: center;
       margin: 50px;
 	  background-color: black;
@@ -32,7 +37,8 @@
       color: white;
       padding: 0 10px;
       text-align: center;
-      font-size: 12px;
+      font-family: opendyslexic-reg;
+	  font-size: 12px;
       margin: 5px;
       border-radius: 5px;
       cursor: pointer;
@@ -123,6 +129,7 @@
 	outline: none;
 	padding: 3px;
 	color: red;
+	font-family: opendyslexic-reg;
 	font-size: 12px;
 	}
 	
@@ -132,6 +139,11 @@
     margin: 5px;
     border-radius: 5px;
 	height: 1.5rem;
+	}
+	
+	#volume-control {
+	margin-top: 10px;
+	width: 40%;
 	}
 	
 	.fb{
@@ -149,8 +161,8 @@
 	}
 	
 	@media (max-width: 600px) {
-		body {
-		font-family: Arial, sans-serif;
+		body, {
+		font-family: opendyslexic-reg;
 		text-align: center;
 		margin: 40px;
 		}
@@ -163,20 +175,24 @@
 		}
 		
 		#track-name,#search-bar,#speed-control,a{
-		font-size: 0.7rem;
+		font-size: 0.6rem;
 		}
 		
 		.time-display {
-		font-size: 0.7rem;
+		font-size: 0.6rem;
+		}
+		
+		#volume-control {
+		width: 30%;
 		}
 		
 		.track-list {
 		width: 100%;
-		font-size: 0.7rem;
+		font-size: 0.6rem;
 		}
 		
 		.note {
-		font-size: 0.5rem;     /* Font size adjustment */
+		font-size: 0.4rem;     /* Font size adjustment */
 		}
 		
 		.fb,.tele{
@@ -224,7 +240,7 @@
     <!-- Auto Play Button -->
     <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
 	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
-	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()" style="margin-top: 10px; width: 50%;"> 🕪
+	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()"> 🕪
 	</div>
 
 	<!-- Track List -->
