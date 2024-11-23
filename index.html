@@ -5,145 +5,162 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baz's Ipod</title>
   <style>
-	@font-face { font-family: opendyslexic-bold; src: url('font/OpenDyslexic-Bold.otf'); }
-	@font-face { font-family: opendyslexic-reg; src: url('font/OpenDyslexic-Regular.otf'); }
-	@font-face { font-family: opendyslexic-ita; src: url('font/OpenDyslexic-Italic.otf'); }
-	@font-face { font-family: opendyslexic-boldita; src: url('font/OpenDyslexic-BoldItalic.otf'); }
-  
     body {
-	  font-family: opendyslexic-reg;
-      text-align: center;
-      margin: 50px;
-	  background-color: black;
+		font-family: arial;
+		text-align: center;
+		margin: 50px;
+		background-color: black;
     }
 	
 	h3{
-	  color: white;
-	  text-align: center;
+		color: white;
+		text-align: center;
 	}
 
     .audio-player {
-      display: inline-block;
-      padding: 20px;
-      background-color: #f4f4f4;
-      border: 2px solid yellow;
-      border-radius: 10px;
-      width: 400px;
+		display: inline-block;
+		padding: 20px;
+		background-color: #f4f4f4;
+		border: 2px solid yellow;
+		border-radius: 10px;
+		width: 400px;
     }
 
     button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 0 10px;
-      text-align: center;
-      font-family: opendyslexic-reg;
-	  font-size: 12px;
-      margin: 5px;
-      border-radius: 5px;
-      cursor: pointer;
-	  height: 1.5rem;
-	  text-decoration: none;
+		background-color: #98FB98;
+		border: none;
+		color: white;
+		padding: 5px 10px;
+		text-align: center;
+		font-family: arial;
+		font-size: 12px;
+		margin: 5px;
+		border-radius: 5px;
+		cursor: pointer;
+		text-decoration: none;
     }
 
 	button:active{
-	  color: yellow;
-	  background-color: black;
+		color: yellow;
+		background-color: black;
+	}
+	
+	.playerbutton {
+		height: 1.2rem;
+	}
+
+	#button-container {
+		display: flex;
+		justify-content: center; /* Center buttons horizontally */
+		align-items: center; /* Align buttons vertically in the container */ 
+	}
+
+	#button-container button {
+		font-size: 12px;
+		cursor: pointer;
+		border: none;
+		border-radius: 5px;
+		background-color: #007bff;
+		color: white;
 	}
 
     audio {
-      display: none;
+		display: none;
     }
 
     #track-name {
-      margin-top: 25px;
-      font-weight: bold;
-	  background-color: white;
-	  width: 100%;
-	  padding: 5px;
-	  box-sizing: border-box;
-	  text-align: center;
+		margin-top: 25px;
+		font-weight: bold;
+		background-color: #ECFFDC;
+		width: 100%;
+		padding: 5px;
+		box-sizing: border-box;
+		text-align: center;
     }
 
     #progress-bar {
-      width: 100%;
-      margin: 10px 0;
+		width: 100%;
+		margin: 10px 0;
     }
 
     .time-display {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
+		display: flex;
+		justify-content: space-between;
+		font-size: 14px;
     }
 
     .track-list {
-	  text-align: left;
-      margin-top: 20px;
-	  width: 400px;
+		text-align: left;
+		margin-top: 20px;
+		width: 400px;
     }
+	
+	#track-list-container {
+		display: none; /* Hide the track list by default */
+	}
 
     .track-list ul {
-      padding: 0;
-      list-style: none;
-	  color: white;
+		padding: 0;
+		list-style: none;
+		color: white;
     }
 
     .track-list li {
-      margin: 10px 0;
-      cursor: pointer;
-      padding: 5px;
-      border: 1px solid yellow;
-      border-radius: 5px;
-	  text-decoration: none;
+		margin: 10px 0;
+		cursor: pointer;
+		padding: 5px;
+		border: 1px solid yellow;
+		border-radius: 5px;
+		text-decoration: none;
     }
 
     .track-list li:active {
-      color: yellow;
-	  background-color: black;
+		color: yellow;
+		background-color: black;
     }
 	
 	.playing {
-	background-color: #4CAF50;
-	color: white;
+		background-color: #4CAF50;
+		color: white;
 	}
 	
 	.note {
-	position: fixed;     /* Fix the element to a specific position */
-	bottom: 0;           /* Position at the bottom of the screen */
-	left: 0;             /* Align to the left side */
-	width: 100%;         /* Full width to span the entire bottom */
-	text-align: center;  /* Center the text */
-	font-size: 0.7rem;     /* Font size adjustment */
-	background-color: white;  /* Background color */
-	color: grey;        /* Text color */
-	padding: 5px;       /* Padding for a bit of space */
+		position: fixed;     /* Fix the element to a specific position */
+		bottom: 0;           /* Position at the bottom of the screen */
+		left: 0;             /* Align to the left side */
+		width: 100%;         /* Full width to span the entire bottom */
+		text-align: center;  /* Center the text */
+		font-size: 0.7rem;     /* Font size adjustment */
+		background-color: white;  /* Background color */
+		color: grey;        /* Text color */
+		padding: 5px;       /* Padding for a bit of space */
 	}
 
 	#timer-display{
-	color: white;
-	font-size: 12px;
+		color: white;
+		font-size: 12px;
 	}
 	
 	#search-bar{
-	border-radius: 5px;
-	outline: none;
-	padding: 3px;
-	color: red;
-	font-family: opendyslexic-reg;
-	font-size: 12px;
+		border-radius: 5px;
+		outline: none;
+		padding: 3px;
+		color: red;
+		font-family: opendyslexic-reg;
+		font-size: 12px;
 	}
 	
 	#speed-control{
-	outline: none;
-    padding: 0 2px;
-    margin: 5px;
-    border-radius: 5px;
-	height: 1.5rem;
+		outline: none;
+		padding: 0 2px;
+		margin: 5px;
+		border-radius: 5px;
+		height: 1.5rem;
 	}
 	
 	#volume-control {
-	margin-top: 10px;
-	width: 40%;
+		margin-top: 10px;
+		width: 40%;
 	}
 	
 	.fb{
@@ -162,7 +179,7 @@
 	
 	@media (max-width: 600px) {
 		body, {
-		font-family: opendyslexic-reg;
+		font-family: arial;
 		text-align: center;
 		margin: 40px;
 		}
@@ -210,13 +227,13 @@
 
   <div class="audio-player">
     <div>
-      <button onclick="prevAudio()">◁</button>
-      <button onclick="playPauseAudio()">Play/Pause</button>
-      <button onclick="nextAudio()">▷</button>
+      <button onclick="prevAudio()"><img src="previous.svg" class="playerbutton"></button>
+      <button onclick="playPauseAudio()"><img src="play.svg" class="playerbutton"></button>
+      <button onclick="nextAudio()"><img src="next.svg" class="playerbutton"></button>
 	  <br>
-	  <button onclick="replayAudio()">↻</button>
-	  <button onclick="shuffleAudio()">Shuffle</button>
-	  <button onclick="stopAudio()">◼</button>
+	  <button onclick="replayAudio()"><img src="restart.svg" class="playerbutton"></button>
+	  <button onclick="shuffleAudio()"><img src="shuffle.svg" class="playerbutton"></button>
+	  <button onclick="stopAudio()"><img src="stop.svg" class="playerbutton"></button>
 	  <br>
 	  <a>speed:</a> 
 	  <select id="speed-control" onchange="changePlaybackSpeed()">
@@ -240,21 +257,28 @@
     <!-- Auto Play Button -->
     <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
 	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
-	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()"> 🕪
+	<input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()"><img src="volume.svg" class="playerbutton">
+	</div>
+
+	<!-- Buttons Container -->
+	<div id="button-container">
+		<button id="toggle-tracks-btn" onclick="toggleTrackList()">Show Tracks</button>
+		<button onclick="setSleepTimer()">Off Timer</button>
+		<span id="timer-display"></span>
 	</div>
 
 	<!-- Track List -->
 	<center>
-	<div class="track-list">
-    <h3>Tracks</h3>
+	<div class="track-list" id="track-list-container">
+		<h3>Tracks</h3>
 	
-	<center>
-	<input type="text" id="search-bar" placeholder="Search..." oninput="filterTracks()">
-    </center>
+		<center>
+		<input type="text" id="search-bar" placeholder="Search..." oninput="filterTracks()">
+		</center>
 	
-	<ul id="track-list">
-      <!-- Tracks will be dynamically inserted here -->
-    </ul>
+		<ul id="track-list">
+		<!-- Tracks will be dynamically inserted here -->
+		</ul>
 	</div>
 	</center>
 	
@@ -264,27 +288,30 @@
 		<a href="https://t.me/bazliamin" target="_blank"><img src="tele.svg" class="tele"></a>
 	</div>
   
-	<audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
-	<audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
-	<audio id="audio3" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sunnah%20Berjuang.MP3"></audio>
-	<audio id="audio4" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Jalan.mp3"></audio>
+	<audio id="audio1" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Jalan.mp3"></audio>
+	<audio id="audio2" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Ajarkan%20Aku%20Setia%20-%20Al-Manna.mp3"></audio>
+	<audio id="audio3" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sifat%2020.mp3"></audio>
+	<audio id="audio4" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Rahsia%20Bahagia.MP3"></audio>
+	<audio id="audio5" src="https://github.com/bazliamin90/audio/raw/refs/heads/main/s/Sunnah%20Berjuang.MP3"></audio>
+	
 
-	<button onclick="setSleepTimer()">Sleep Timer</button>
-	<span id="timer-display"></span>
+	
 
   <script>
     const audioTracks = [
       document.getElementById('audio1'),
       document.getElementById('audio2'),
       document.getElementById('audio3'),
-	  document.getElementById('audio4')
+	  document.getElementById('audio4'),
+	  document.getElementById('audio5')
     ];
 
     const trackNames = [
-      "Sifat 20 - Nadamurni",
+	  "Jalan - Al-Manna",
+	  "Ajarkan Aku Setia - Al-Manna",
+	  "Sifat 20 - Nadamurni",
       "Rahsia Bahagia - Qathrunnada",
-      "Sunnah Berjuang - Nadamurni",
-	  "Jalan - Al-Manna"
+      "Sunnah Berjuang - Nadamurni"
     ];
 
     let currentTrack = 0;
@@ -596,6 +623,19 @@ function setSleepTimer() {
 	const speed = document.getElementById('speed-control').value;
 	audioTracks[currentTrack].playbackRate = speed;
 	}
+
+function toggleTrackList() {
+  const trackListContainer = document.getElementById('track-list-container');
+  const toggleButton = document.getElementById('toggle-tracks-btn');
+
+  if (trackListContainer.style.display === 'none' || trackListContainer.style.display === '') {
+    trackListContainer.style.display = 'block'; // Show the track list
+    toggleButton.textContent = 'Hide Tracks'; // Change button text
+  } else {
+    trackListContainer.style.display = 'none'; // Hide the track list
+    toggleButton.textContent = 'Show Tracks'; // Change button text
+  }
+}
 
   </script>
 </body>
