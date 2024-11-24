@@ -159,9 +159,47 @@
 		height: 1.5rem;
 	}
 	
-	#volume-control {
+	.volume {
+		display: flex; /* Enables flexbox */
+		align-items: center; /* Aligns items vertically in the center */
+		justify-content: center; /* Aligns items horizontally in the center */
+		gap: 5px;
+	}
+	
+	.slider {
+		-webkit-appearance: none;
+		width: 50%;
+		height: 7px;
+		background: #d3d3d3;
+		border: 1px solid grey;
+		border-radius: 10px;
+		outline: none;
+		opacity: 0.7;
+		-webkit-transition: .2s;
+		transition: opacity .2s;
+		margin-bottom: 10px;
 		margin-top: 10px;
-		width: 40%;
+	}
+	
+	.slider:hover {
+		opacity: 1;
+	}
+
+	.slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 10px;
+		height: 20px;
+		background: #98FB98;
+		border: 1px solid grey;
+		cursor: pointer;
+	}
+
+	.slider::-moz-range-thumb {
+		width: 25px;
+		height: 25px;
+		background: #04AA6D;
+		cursor: pointer;
 	}
 	
 	.fb{
@@ -200,10 +238,6 @@
 		font-size: 0.6rem;
 		}
 		
-		#volume-control {
-		width: 30%;
-		}
-		
 		.track-list {
 		width: 100%;
 		font-size: 0.6rem;
@@ -226,7 +260,7 @@
 </head>
 <body>
 
-  <div class="audio-player">
+<div class="audio-player">
     <div>
       <button onclick="prevAudio()"><img src="previous.svg" class="playerbutton"></button>
       <button onclick="playPauseAudio()"><img src="play.svg" class="playerbutton"></button>
@@ -250,7 +284,8 @@
     
     <!-- Progress bar and time -->
     <input type="range" id="progress-bar" value="0" max="100" step="1" oninput="seekAudio()">
-    <div class="time-display">
+    
+	<div class="time-display">
       <span id="current-time">0:00</span>
       <span id="duration-time">0:00</span>
     </div>
@@ -258,8 +293,12 @@
     <!-- Auto Play Button -->
     <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
 	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
-	<br><input type="range" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()"><img src="volume.svg" class="playerbutton">
+
+	<div class="volume">
+		<input type="range" class="slider" id="volume-control" min="0" max="100" value="100" step="1" oninput="adjustVolume()">
+		<img src="volume.svg" id="mute-button" class="playerbutton">
 	</div>
+</div>
 
 	<!-- Buttons Container -->
 	<div id="button-container">
@@ -637,6 +676,25 @@ function toggleTrackList() {
     toggleButton.textContent = 'Show Tracks'; // Change button text
   }
 }
+
+// Add mute/unmute functionality
+const muteButton = document.getElementById('mute-button');
+let isMuted = false;
+
+muteButton.addEventListener('click', () => {
+  const currentAudio = audioTracks[currentTrack];
+  
+  // Toggle mute
+  isMuted = !isMuted;
+  currentAudio.muted = isMuted;
+
+  // Update the button image
+  if (isMuted) {
+    muteButton.src = 'mute.svg';
+  } else {
+    muteButton.src = 'volume.svg';
+  }
+});
 
   </script>
 </body>
