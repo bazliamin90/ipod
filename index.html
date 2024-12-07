@@ -47,7 +47,7 @@
 	}
 	
 	.playerbutton {
-		height: 1.2rem;
+		height: 1rem;
 	}
 
 	#button-container {
@@ -216,6 +216,13 @@
 		bottom: 0.4rem;
 	}
 	
+	#cover-art {
+		border-radius: 10px;
+		width: 50%;
+		height: auto;
+		object-fit: contain;
+	}
+	
 	@media (max-width: 600px) {
 		body, {
 		font-family: arial;
@@ -262,14 +269,6 @@
 
 <div class="audio-player">
     <div>
-      <button onclick="prevAudio()"><img src="previous.svg" class="playerbutton"></button>
-      <button onclick="playPauseAudio()"><img src="play.svg" class="playerbutton"></button>
-      <button onclick="nextAudio()"><img src="next.svg" class="playerbutton"></button>
-	  <br>
-	  <button onclick="replayAudio()"><img src="restart.svg" class="playerbutton"></button>
-	  <button onclick="shuffleAudio()"><img src="shuffle.svg" class="playerbutton"></button>
-	  <button onclick="stopAudio()"><img src="stop.svg" class="playerbutton"></button>
-	  <br>
 	  <a>speed:</a> 
 	  <select id="speed-control" onchange="changePlaybackSpeed()">
 		<option value="0.5">0.5x</option>
@@ -277,21 +276,31 @@
 		<option value="1.5">1.5x</option>
 		<option value="2">2x</option>
 	  </select>
-
     </div>
+
+	<img id="cover-art" alt="Cover Art">
 
     <p id="track-name">No track is being played</p>
     
+	<button onclick="prevAudio()"><img src="previous.svg" class="playerbutton"></button>
+    <button onclick="playPauseAudio()"><img src="play.svg" class="playerbutton"></button>
+    <button onclick="nextAudio()"><img src="next.svg" class="playerbutton"></button>
+	
     <!-- Progress bar and time -->
     <input type="range" id="progress-bar" value="0" max="100" step="1" oninput="seekAudio()">
-    
+	
 	<div class="time-display">
       <span id="current-time">0:00</span>
       <span id="duration-time">0:00</span>
     </div>
+	
+	<button onclick="replayAudio()"><img src="restart.svg" class="playerbutton"></button>
+	<button onclick="shuffleAudio()"><img src="shuffle.svg" class="playerbutton"></button>
+	<button onclick="stopAudio()"><img src="stop.svg" class="playerbutton"></button>
 
     <!-- Auto Play Button -->
-    <button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
+    <br>
+	<button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
 	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
 
 	<div class="volume">
@@ -353,6 +362,14 @@
       "Rahsia Bahagia - Qathrunnada",
       "Sunnah Berjuang - Nadamurni"
     ];
+	
+	const coverArts = [
+		"cover1.jpg", // Replace with the actual path or URL of the cover art
+		"cover2.jpg",
+		"cover3.jpg",
+		"cover4.jpg",
+		"cover3.jpg"
+	];
 
     let currentTrack = 0;
     let isPlaying = false;
@@ -429,7 +446,6 @@
 	}
 	}
 
-
     // Go to previous audio
     function prevAudio() {
 	audioTracks[currentTrack].pause();
@@ -470,7 +486,6 @@
       };
     }
 
-    // Update track name display
     function updateTrackName() {
 	// Update track name display
 	document.getElementById('track-name').textContent = trackNames[currentTrack];
@@ -481,7 +496,19 @@
   
 	// Add 'playing' class to the current track item
 	trackItems[currentTrack].classList.add('playing');
+	
+	// Update cover art
+	const coverArt = document.getElementById('cover-art');
+	coverArt.src = coverArts[currentTrack];
+	coverArt.alt = `Cover Art for ${trackNames[currentTrack]}`;
+	document.getElementById('cover-art').src = coverArts[currentTrack];
 	}
+	
+	// Set the initial cover art when the page loads
+	window.onload = function() {
+	document.getElementById('cover-art').src = coverArts[currentTrack];
+	document.getElementById('cover-art').alt = `Cover Art for ${trackNames[currentTrack]}`;
+	};
 
     // Update progress bar and time display
     function updateProgress() {
