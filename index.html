@@ -4,266 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baz's Ipod</title>
-  <style>
-    body {
-		font-family: arial;
-		text-align: center;
-		margin: 50px;
-		background-color: black;
-		overflow-y:scroll;
-    }
-	
-	h3{
-		color: white;
-		text-align: center;
-	}
-
-    .audio-player {
-		display: inline-block;
-		padding: 20px;
-		background-color: #f4f4f4;
-		border: 2px solid yellow;
-		border-radius: 10px;
-		width: 400px;
-    }
-
-    button {
-		background-color: #98FB98;
-		border: none;
-		color: white;
-		padding: 5px 10px;
-		text-align: center;
-		font-family: arial;
-		font-size: 12px;
-		margin: 5px;
-		border-radius: 5px;
-		cursor: pointer;
-		text-decoration: none;
-    }
-
-	button:active{
-		color: yellow;
-		background-color: black;
-	}
-	
-	.playerbutton {
-		height: 1rem;
-	}
-
-	#button-container {
-		display: flex;
-		justify-content: center; /* Center buttons horizontally */
-		align-items: center; /* Align buttons vertically in the container */ 
-	}
-
-	#button-container button {
-		font-size: 12px;
-		cursor: pointer;
-		border: none;
-		border-radius: 5px;
-		background-color: #007bff;
-		color: white;
-	}
-
-    audio {
-		display: none;
-    }
-
-    #track-name {
-		margin-top: 25px;
-		font-weight: bold;
-		background-color: #ECFFDC;
-		width: 100%;
-		padding: 5px;
-		box-sizing: border-box;
-		text-align: center;
-    }
-
-    #progress-bar {
-		width: 100%;
-		margin: 10px 0;
-    }
-
-    .time-display {
-		display: flex;
-		justify-content: space-between;
-		font-size: 14px;
-    }
-
-    .track-list {
-		text-align: left;
-		margin-top: 20px;
-		width: 400px;
-    }
-	
-	#track-list-container {
-		display: none; /* Hide the track list by default */
-	}
-
-    .track-list ul {
-		padding: 0;
-		list-style: none;
-		color: white;
-    }
-
-    .track-list li {
-		margin: 10px 0;
-		cursor: pointer;
-		padding: 5px;
-		border: 1px solid yellow;
-		border-radius: 5px;
-		text-decoration: none;
-    }
-
-    .track-list li:active {
-		color: yellow;
-		background-color: black;
-    }
-	
-	.playing {
-		background-color: #4CAF50;
-		color: white;
-	}
-	
-	.note {
-		position: fixed;     /* Fix the element to a specific position */
-		bottom: 0;           /* Position at the bottom of the screen */
-		left: 0;             /* Align to the left side */
-		width: 100%;         /* Full width to span the entire bottom */
-		text-align: center;  /* Center the text */
-		font-size: 0.7rem;     /* Font size adjustment */
-		background-color: white;  /* Background color */
-		color: grey;        /* Text color */
-		padding: 5px;       /* Padding for a bit of space */
-	}
-
-	#timer-display{
-		color: white;
-		font-size: 12px;
-	}
-	
-	#search-bar{
-		border-radius: 5px;
-		outline: none;
-		padding: 3px;
-		color: red;
-		font-family: opendyslexic-reg;
-		font-size: 12px;
-	}
-	
-	#speed-control{
-		outline: none;
-		padding: 0 2px;
-		margin: 5px;
-		border-radius: 5px;
-		height: 1.5rem;
-	}
-	
-	.volume {
-		display: flex; /* Enables flexbox */
-		align-items: center; /* Aligns items vertically in the center */
-		justify-content: center; /* Aligns items horizontally in the center */
-		gap: 5px;
-	}
-	
-	.slider {
-		-webkit-appearance: none;
-		width: 50%;
-		height: 7px;
-		background: #d3d3d3;
-		border: 1px solid grey;
-		border-radius: 10px;
-		outline: none;
-		opacity: 0.7;
-		-webkit-transition: .2s;
-		transition: opacity .2s;
-		margin-bottom: 10px;
-		margin-top: 10px;
-	}
-	
-	.slider:hover {
-		opacity: 1;
-	}
-
-	.slider::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		appearance: none;
-		width: 10px;
-		height: 20px;
-		background: #98FB98;
-		border: 1px solid grey;
-		cursor: pointer;
-	}
-
-	.slider::-moz-range-thumb {
-		width: 25px;
-		height: 25px;
-		background: #04AA6D;
-		cursor: pointer;
-	}
-	
-	.fb{
-		height: 0.8rem;
-		position: fixed;
-		right: 0.5rem;
-		bottom: 0.4rem;
-	}
-		
-	.tele{
-		height: 0.8rem;
-		position: fixed;
-		right: 2rem;
-		bottom: 0.4rem;
-	}
-	
-	#cover-art {
-		border-radius: 10px;
-		width: 50%;
-		height: auto;
-		object-fit: contain;
-	}
-	
-	@media (max-width: 600px) {
-		body, {
-		font-family: arial;
-		text-align: center;
-		margin: 40px;
-		}
-		
-		.audio-player {
-		width: 100%;               /* Full width */
-		padding: 10px;             /* Padding adjustments */
-		margin: 0 auto;            /* Center horizontally */
-		box-sizing: border-box;     /* Ensure padding doesn't exceed width */
-		}
-		
-		#track-name,#search-bar,#speed-control,a{
-		font-size: 0.6rem;
-		}
-		
-		.time-display {
-		font-size: 0.6rem;
-		}
-		
-		.track-list {
-		width: 100%;
-		font-size: 0.6rem;
-		}
-		
-		.note {
-		font-size: 0.4rem;     /* Font size adjustment */
-		}
-		
-		.fb,.tele{
-		height: 0.6rem;
-		}
-		
-		.tele{
-		right: 1.5rem;
-		}
-	}
-
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -278,7 +19,7 @@
 	  </select>
     </div>
 
-	<img id="cover-art" alt="Cover Art">
+	<img id="cover-art" alt="loading cover">
 
     <p id="track-name">No track is being played</p>
     
@@ -300,7 +41,7 @@
 
     <!-- Auto Play Button -->
     <br>
-	<button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Auto Play Next</button>
+	<button id="autoplay-btn" onclick="toggleAutoPlay()" style="background-color: grey;">Continue next</button>
 	<button id="loop-btn" onclick="toggleLoop()" style="background-color: grey;">Loop</button>
 
 	<div class="volume">
@@ -397,11 +138,13 @@
 	isAutoPlayNext = !isAutoPlayNext;
 
 	if (isAutoPlayNext) {
-    autoPlayBtn.style.backgroundColor = '#4CAF50';  // Active color like other buttons
-    autoPlayBtn.textContent = "Auto Play Next";
+    autoPlayBtn.style.backgroundColor = '#98FB98';  // Active color like other buttons
+    autoPlayBtn.style.color = 'black';
+	autoPlayBtn.textContent = "Continue next";
 	} else {
     autoPlayBtn.style.backgroundColor = 'grey';     // Inactive grey color
-    autoPlayBtn.textContent = "Auto Play Next";
+    autoPlayBtn.style.color = 'white';
+	autoPlayBtn.textContent = "Continue next";
 	}
 	
 	if (isAutoPlayNext) {
@@ -581,11 +324,13 @@
 	isLooping = !isLooping;
 
 	if (isLooping) {
-    loopBtn.style.backgroundColor = '#4CAF50';  // Active color like other buttons
-    audioTracks[currentTrack].loop = true;      // Enable loop
+    loopBtn.style.backgroundColor = '#98FB98';  // Active color like other buttons
+    loopBtn.style.color = 'black';
+	audioTracks[currentTrack].loop = true;      // Enable loop
 	} else {
     loopBtn.style.backgroundColor = 'grey';     // Inactive grey color
     audioTracks[currentTrack].loop = false;     // Disable loop
+	loopBtn.style.color = 'white';
 	}
 	}
 	
